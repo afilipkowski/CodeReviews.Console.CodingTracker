@@ -6,8 +6,7 @@ namespace CodingTracker.Controllers;
 
 internal class CodingSessionController
 {
-    private readonly Database db = new Database();
-    public void RecordSession(bool update = false)
+    public void RecordSession(DatabaseController db, bool update = false)
     {
         DateTime startTime;
         DateTime endTime;
@@ -15,7 +14,7 @@ internal class CodingSessionController
 
         if (update)
         {
-            DisplaySessions();
+            DisplaySessions(db);
             id = AnsiConsole.Ask<int>("Enter the [green]ID[/] of the session you want to update:");
         }
 
@@ -53,9 +52,10 @@ internal class CodingSessionController
         }
     }
 
-    public void DisplaySessions()
+    public void DisplaySessions(DatabaseController db)
     {
         List<CodingSession> sessions = db.GetSessions();
+        TimeSpan totalTime = new TimeSpan();
 
         if (sessions.Count == 0)
         {
@@ -78,14 +78,20 @@ internal class CodingSessionController
                session.EndTime,
                session.Duration
                );
+
+            totalTime += TimeSpan.Parse(session.Duration);
         }
 
+        var averageTime = new TimeSpan(totalTime.Ticks / sessions.Count);
+
         AnsiConsole.Write(table);
+        AnsiConsole.MarkupLine($"Total time spent coding: [green]{totalTime.Hours} hours and {totalTime.Minutes} minutes[/]");
+        AnsiConsole.MarkupLine($"Average time spent coding: [green]{averageTime.Hours} hours and {averageTime.Minutes} minutes[/]");
     }
 
-    public void DeleteSession()
+    public void DeleteSession(DatabaseController db)
     {
-        DisplaySessions();
+        DisplaySessions(db);
         int id = AnsiConsole.Ask<int>("Enter the [green]ID[/] of the session you want to delete:");
         if (db.DeleteSession(id))
         {

@@ -1,15 +1,16 @@
 ﻿using System.Configuration;
+using CodingTracker.Models;
 using Dapper;
 using Microsoft.Data.Sqlite;
 
-namespace CodingTracker.Models;
+namespace CodingTracker.Controllers;
 
-internal class Database
+internal class DatabaseController
 {
     private string connectionString = ConfigurationManager.ConnectionStrings["databaseConn"].ConnectionString;
     private string tableName = ConfigurationManager.AppSettings["tableName"];
 
-    internal Database()
+    internal DatabaseController()
     {
         using (var connection = new SqliteConnection(connectionString))
         {
@@ -52,7 +53,7 @@ internal class Database
         using (var connection = new SqliteConnection(connectionString))
         {
             var command = $"UPDATE {tableName} SET StartTime=@StartTime, EndTime=@EndTime, Duration=@Duration WHERE Id = @Id";
-            return connection.Execute(command, new { StartTime = session.StartTime, EndTime = session.EndTime, Duration = session.Duration, Id = id }) > 0;
+            return connection.Execute(command, new { session.StartTime, session.EndTime, session.Duration, Id = id }) > 0;
         }
     }
 }
