@@ -13,7 +13,6 @@ internal class UserInterface
         while (true)
         {
             Console.Clear();
-
             var menuChoice = AnsiConsole.Prompt(
                 new SelectionPrompt<MenuOption>()
                 .Title("What do you want to do?")
@@ -31,10 +30,9 @@ internal class UserInterface
                     _codingSessionController.DeleteSession(db);
                     break;
                 case MenuOption.UpdateSession:
-                    _codingSessionController.RecordSession(db, update: true);
+                    _codingSessionController.UpdateSession(db);
                     break;
             }
-
             AnsiConsole.MarkupLine("\nPress any key to continue");
             Console.ReadKey();
         }
