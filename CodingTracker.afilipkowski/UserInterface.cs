@@ -8,6 +8,7 @@ internal class UserInterface
 {
     private readonly DatabaseController db = new();
     private readonly CodingSessionController _codingSessionController = new();
+
     internal void MainMenu()
     {
         while (true)
