@@ -10,7 +10,6 @@ internal class CodingSessionController
     {
         DateTime startTime = InputHelper.GetDateInput("start");
         DateTime endTime = InputHelper.GetDateInput("end");
-
         if (startTime > endTime)
         {
             return null;
@@ -25,6 +24,7 @@ internal class CodingSessionController
             };
         }
     }
+
     public void RecordSession(DatabaseController db)
     {
         var session = CreateSession();
@@ -43,7 +43,7 @@ internal class CodingSessionController
     {
         DisplaySessions(db);
         int id = AnsiConsole.Ask<int>("\nEnter the [green]ID[/] of the session you want to update or enter 0 to cancel:");
-        if (id == 0) 
+        if (id == 0)
             return;
         var session = CreateSession();
         if (session != null)
@@ -71,7 +71,6 @@ internal class CodingSessionController
             AnsiConsole.MarkupLine("[red]No sessions recorded yet.[/]");
             return;
         }
-
         TimeSpan totalTime = CalculateTotalTime(sessions);
         TimeSpan averageTime = new(totalTime.Ticks / sessions.Count);
         var table = InputHelper.GenerateTable(sessions);

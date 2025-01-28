@@ -39,6 +39,7 @@ internal class InputHelper
         table.AddColumn("[green]Start Time[/]");
         table.AddColumn("[green]End Time[/]");
         table.AddColumn("[green]Duration (hh:mm)[/]");
+
         foreach (var session in sessions)
         {
             table.AddRow(
